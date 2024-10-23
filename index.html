@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Disk Defragmenter</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #2d2d2d;
+        color: #ffffff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        text-align: center;
+        width: 80%;
+        max-width: 600px;
+      }
+
+      .disk-options {
+        margin-bottom: 20px;
+      }
+
+      .progress-container {
+        margin: 20px 0;
+      }
+
+      .progress-bar {
+        width: 0%;
+        height: 30px;
+        background-color: #4caf50;
+        transition: width 0.2s ease;
+      }
+
+      .disk-fragments {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 5px;
+        margin-top: 20px;
+      }
+
+      .fragment {
+        width: 100%;
+        height: 20px;
+        background-color: #757575;
+        transition: background-color 0.2s ease;
+      }
+
+      .fake-copy {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #b0b0b0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Disk Defragmenter</h1>
+      <div class="disk-options">
+        <label for="disk-select">Choose a fake disk:</label>
+        <select id="disk-select">
+          <option value="Disk C">Disk C</option>
+          <option value="Disk D">Disk D</option>
+          <option value="Disk E">Disk E</option>
+        </select>
+        <button id="start-defrag">Start Defragmentation</button>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+        <p id="progress-text">Progress: 0%</p>
+      </div>
+      <div class="disk-fragments" id="disk-fragments"></div>
+      <p id="fake-copy" class="fake-copy"></p>
+    </div>
+    <script>
+      document.getElementById("start-defrag").addEventListener("click", () => {
+        const diskSelect = document.getElementById("disk-select").value;
+        const progressBar = document.getElementById("progress-bar");
+        const progressText = document.getElementById("progress-text");
+        const diskFragments = document.getElementById("disk-fragments");
+        const fakeCopy = document.getElementById("fake-copy");
+
+        // Clear previous fragments
+        diskFragments.innerHTML = "";
+        fakeCopy.textContent = "";
+
+        // Generate disk fragments
+        const fragments = [];
+        const colors = [
+          "#4caf50",
+          "#2196f3",
+          "#ff9800",
+          "#f44336",
+          "#9c27b0",
+          "#ffeb3b",
+          "#3f51b5",
+          "#00bcd4",
+          "#8bc34a",
+          "#ffc107",
+        ];
+
+        for (let i = 0; i < 100; i++) {
+          const fragment = document.createElement("div");
+          fragment.className = "fragment";
+          diskFragments.appendChild(fragment);
+          fragments.push(fragment);
+        }
+
+        let progress = 0;
+        const interval = setInterval(() => {
+          if (progress <= 100) {
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `Progress: ${progress}%`;
+
+            // Fill in the fragments with different colors
+            const filledCount = Math.floor(progress / 1); // 1% per fragment
+            for (let i = 0; i < filledCount; i++) {
+              fragments[i].style.backgroundColor = colors[i % colors.length]; // Cycle through colors
+            }
+
+            // Update fake copy text
+            if (progress % 10 === 0) {
+              fakeCopy.textContent = `Defragmenting ${diskSelect}... ${progress}% completed.`;
+            }
+
+            progress++;
+          } else {
+            clearInterval(interval);
+            fakeCopy.textContent = `Defragmentation of ${diskSelect} complete!`;
+          }
+        }, 500);
+      });
+    </script>
+  </body>
+</html>
