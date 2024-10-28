@@ -56,6 +56,10 @@
         font-size: 14px;
         color: #b0b0b0;
       }
+
+      #progress-text {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -77,6 +81,7 @@
       <div class="disk-fragments" id="disk-fragments"></div>
       <p id="fake-copy" class="fake-copy"></p>
     </div>
+
     <script>
       document.getElementById("start-defrag").addEventListener("click", () => {
         const diskSelect = document.getElementById("disk-select").value;
